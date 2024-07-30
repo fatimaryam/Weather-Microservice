@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: weather_db
+    ports:
+      - "5435:5432" # Map host port 5433 to container port 5432
+
+  weather-microservice:
+    build: .
+    depends_on:
+      - postgres
+    ports:
+      - "8000:8000"
+    environment:
+      API_KEY: 9e26b6849844370389437ea21e9b334c
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/weather_db # Use port 5432
